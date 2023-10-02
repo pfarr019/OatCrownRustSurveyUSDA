@@ -182,7 +182,7 @@ ggplot(strain_counts_all, aes(x=n, y=frequency)) +
   ylab("Number of Races \n(Square root axis transformation)")+
   ggtitle("Oat Crown Rust Races")
 
-ggsave("Figure 2 Histogram races.tiff", scale=2.5, dpi=500, width=1050, height=800,units="px")
+ggsave("Figure 2 Histogram races.tiff", scale=1, dpi=600, width=178, height=100, units="mm")
 
 ######Now comparing the races of the northern and southern isolates##########
 ####first looking at the northern strains
@@ -310,7 +310,8 @@ boxplot1 <-ggplot(OCR_wout_2013_clean, aes(x=factor(year, levels=1993:2022), y=c
   annotate("rect", xmin = 0.4, xmax = 12.5, ymin = 30, ymax = 40,fill = "grey")+ #adding grey rectangles because didn't have all 40 lines in the beginning
   annotate("rect", xmin = 12.5, xmax = 17.5, ymin = 36, ymax = 40,fill = "grey")+
   annotate("point", x = 21, y = 16, size=0.5) + #manually adding two observation dots to 2013 because it originally tried to turn them into a boxplot
-  annotate("point", x = 21, y = 24, size=0.5) #manually adding two observation dots to 2013 because it originally tried to turn them into a boxplot
+  annotate("point", x = 21, y = 24, size=0.5) + #manually adding two observation dots to 2013 because it originally tried to turn them into a boxplot 
+  theme(text=element_text(size=9))
   
 boxplot1
 
@@ -332,7 +333,7 @@ boxplot_legend
 boxplotwlegend <- ggarrange(boxplot1, boxplot_legend, widths=c(1,0.15),
                           nrow=1)
 boxplotwlegend
-ggsave("Figure 3 boxplotwlegend.tiff", scale=1.2, dpi=300, width=2100, height=1400, units="px", path=".")
+ggsave("Figure 3 boxplotwlegend.tiff", scale=1, dpi=600, width=178, height=125, units="mm", path=".", bg="white")
 
 #############################
 
@@ -390,13 +391,13 @@ dendro_rust <- ggplot(segment(dendro_data_for_plot)) +
   geom_segment(aes(x = x, y = y, xend = xend, yend = yend)) + 
   coord_flip() +
   theme_dendro()+
-  theme(plot.margin = unit(c(5.5,0,5.5,5.5), "points"))+
+  theme(plot.margin = unit(c(5.5,0,5.5,5.5), "points"), text=element_text(size=7.5))+
   scale_y_reverse(expand = c(0, 0))+
   scale_x_continuous(expand=c(0.015, 0.015))+
-  annotate("text", x=29.0, y=170, label= "A", color="red")+ #manually designate the groups of isolates that I discuss in the article
-  annotate("text", x=13.3, y=230, label= "B", color="red")+
-  annotate("text", x=4.7, y=230, label= "C", color="red")+
-  annotate("text", x=24.2, y=169, label= "D", color="red")
+  annotate("text", x=29.0, y=170, label= "A", color="red", cex=3)+ #manually designate the groups of isolates that I discuss in the article
+  annotate("text", x=13.3, y=230, label= "B", color="red", cex=3)+
+  annotate("text", x=4.7, y=230, label= "C", color="red", cex=3)+
+  annotate("text", x=24.2, y=169, label= "D", color="red", cex=3)
 
 dendro_rust
 
@@ -405,8 +406,8 @@ heatmap_year_ordered <-ggplot(heatmap_data_long, aes(factor(year), factor(differ
   geom_tile(show.legend = FALSE)+
   scale_y_discrete(limits = colnames(heatmap_data_matrix)[clust$order])+
   scale_fill_continuous_sequential(palette = "YlOrRd", rev = TRUE)+
-  theme(axis.title.x = element_blank(), axis.title.y = element_blank(), plot.title = element_text(hjust = 0.5), plot.margin = unit(c(5.5,5.5,5.5,0), "points"))+ #decrease plot margin on left side so lines up closer to the dendrogram
-  geom_text(aes(label = round(percent_virulent, 1)), color = "black", size = 3)+
+  theme(axis.title.x = element_blank(), axis.title.y = element_blank(), plot.title = element_text(hjust = 0.5, size=11), plot.margin = unit(c(5.5,5.5,5.5,0), "points"), text=element_text(size=7.5))+ #decrease plot margin on left side so lines up closer to the dendrogram
+  geom_text(aes(label = round(percent_virulent, 1)), color = "black", size = 2)+
   # ylab("Differential Line")+
   ggtitle("Percentage of virulent isolates per year \n")+
   annotate("segment", x = 20.5, xend = 20.5, y = 40.5, yend = 0.5, colour = "gray", linewidth=1, alpha=0.4)
@@ -447,10 +448,10 @@ heatmap_decade_ordered <- ggplot(Mean_by_decade_long, aes(factor(Decade), factor
   # scale_fill_distiller(palette = "YlGnBu")+
   # scale_fill_viridis_c(option="I")+
   scale_fill_continuous_sequential(palette = "YlOrRd", rev = TRUE)+
-  theme(axis.title.x = element_blank(), axis.title.y = element_blank(), plot.title = element_text(hjust = 0.5))+
+  theme(axis.title.x = element_blank(), axis.title.y = element_blank(), plot.title = element_text(hjust = 0.5), text=element_text(size=7.5))+
   scale_x_discrete(labels=c("1993-2002" = "1993-\n2002", "2003-2012" = "2003-\n2012",
                             "2013-2022" = "2013-\n2022"))+
-  geom_text(aes(label = round(percent_virulent, 1)), color = "black", size = 3)+
+  geom_text(aes(label = round(percent_virulent, 1)), color = "black", size = 2)+
   ggtitle("Percentage of \nvirulent isolates \nper decade")
 heatmap_decade_ordered
 
@@ -507,9 +508,10 @@ heatmap_slope <-ggplot(lmdata, aes(factor(y), factor(gene, levels=rev(unique(gen
         axis.ticks.x=element_blank(), 
         axis.text.y=element_blank(),axis.ticks.y=element_blank(),
         plot.title = element_blank(), 
-        plot.margin = unit(c(5.5,5.5,5.5,0), "points"))+ #decrease plot margin on left side so lines up closer to the dendrogram
+        plot.margin = unit(c(5.5,5.5,5.5,0), "points"), #decrease plot margin on left side so lines up closer to the dendrogram
+        text=element_text(size=7.5))+ 
   scale_x_discrete(labels =c("1" = "change\nper year"))+
-  geom_text(aes(label = slope_sig), color = "black", size = 3)+
+  geom_text(aes(label = slope_sig), color = "black", size = 2)+
   # ylab("Differential Line")+
   ggtitle("Slope")
 heatmap_slope
@@ -519,15 +521,14 @@ arrangedplotsordered_slope <- ggarrange(dendro_rust, heatmap_year_ordered, heatm
                                         labels=c("a", "","","b"),
                                         nrow=1,
                                         align="h",
-                                        widths=c(0.08, 1, 0.05, 0.22))
+                                        widths=c(0.08, 1, 0.06, 0.22))
 arrangedplotsordered_slope
 
 annotate_figure(arrangedplotsordered_slope,
-                left = text_grob("Differential Line", rot = 90))
+                left = text_grob("Differential Line", rot = 90, size=8))
 
 
-ggsave("heatmaporderedwdendroslope.tiff", scale=1, dpi=300, width=5000, height=2100, units="px", path=".")
-ggsave("Figure 4 heatmap.tiff", scale=1.4, dpi=300, width=2902, height=2100, units="px", path=".")
+ggsave("Figure 4 heatmap 450dpi.tiff", scale=1, dpi=450, width=246, height=178, units="mm", path=".", bg="white")
 
 #################################################
 #Plotting the heat map of observations per state#
@@ -604,7 +605,7 @@ mainland + xlab("Longitude") + ylab("Latitude") +
     ymax = -2450000 + (23 - 18)*120000
   )
 
-ggsave("Figure 1 Rust sample map.tiff", scale=2, dpi=600, width=2100, height=1500, units="px")
+ggsave("Figure 1 Rust sample map.tiff", scale=1, dpi=600, width=178, units="mm")
 
 ##############################################################
 #Comparing the southern to northern accessions with a heatmap#
@@ -657,8 +658,8 @@ heatmap_NvsS <- ggplot(heatmap_data_diff_long, aes(factor(year), factor(differen
   labs(fill = "North Vir Perc minus \nSouth Vir Perc   \n")+
   # ylab("Differences in virulence percentages from North to South")+
   scale_fill_continuous_diverging(palette = "Purple_Green", rev = TRUE, limits=c(-100,100))+
-  theme(plot.title = element_text(hjust = 0.5), axis.title.y=element_blank(), legend.position="bottom")+
-  geom_text(aes(label = round(percent_virulent, 1)), color = "black", size = 3)+
+  theme(plot.title = element_text(hjust = 0.5, size=11), axis.title.y=element_blank(), axis.title.x=element_blank(), legend.position="bottom", text=element_text(size=8))+
+  geom_text(aes(label = round(percent_virulent, 1)), color = "black", size = 2.2)+
   ggtitle("Difference in percentage of virulent isolates per year by region")+
   annotate("segment", x = 20.5, xend = 20.5, y = 40.5, yend = 0.5, colour = "gray", linewidth=1, alpha=0.6)
 heatmap_NvsS
@@ -719,10 +720,10 @@ heatmap_mean_diff <- ggplot(heatmap_data_mean_long, aes(factor(decade), factor(d
   scale_y_discrete(limits = colnames(heatmap_data_matrix)[clust$order])+
   # labs(fill = "North Vir Perc\n      minus \nSouth Vir Perc")+
   scale_fill_continuous_diverging(palette = "Purple_Green", rev = TRUE, limits=c(-100,100))+
-  theme(axis.title.x = element_blank(), axis.title.y = element_blank(), plot.title = element_text(hjust = 0.5))+
+  theme(axis.title.x = element_blank(), axis.title.y = element_blank(), plot.title = element_text(hjust = 0.5), text=element_text(size=8))+
   scale_x_discrete(labels=c("1993-2002" = "1993-\n2002", "2003-2012" = "2003-\n2012",
                             "2013-2022" = "2013-\n2022"))+
-  geom_text(aes(label = round(percent_virulent, 1)), color = "black", size = 3)+
+  geom_text(aes(label = round(percent_virulent, 1)), color = "black", size = 2.2)+
   ggtitle("Differences \nby decade")
 heatmap_mean_diff
 
@@ -737,10 +738,10 @@ dendro_rust_groups <- ggplot(line_coord, aes(x = x1, y = y1, xend = x2, yend = y
   theme(plot.margin = unit(c(5.5,0,5.5,5.5), "points"))+
   scale_y_continuous(expand = c(0, 0), limits=c(0.5,40.5))+ #forsome reason have to manually adjust the y axis limits so that it lines up properly on the combined graphic 
   scale_x_reverse(expand=c(0.015, 0.015), limits=c(3.5,0))+
-  annotate("text", x=2.5, y=(37-26)/2+26, label= "A", color="red")+
-  annotate("text", x=2.5, y=(25-22)/2+22, label= "D", color="red")+
-  annotate("text", x=2.5, y=(20-9)/2+9, label= "B", color="red")+
-  annotate("text", x=2.5, y=(8-1)/2+1, label= "C", color="red")
+  annotate("text", x=2.5, y=(37-26)/2+26, label= "A", color="red", cex=3)+
+  annotate("text", x=2.5, y=(25-22)/2+22, label= "D", color="red", cex=3)+
+  annotate("text", x=2.5, y=(20-9)/2+9, label= "B", color="red", cex=3)+
+  annotate("text", x=2.5, y=(8-1)/2+1, label= "C", color="red", cex=3)
 
 dendro_rust_groups
 
@@ -749,15 +750,13 @@ arrangeddiffplotswgroups <- ggarrange(dendro_rust_groups, heatmap_NvsS, heatmap_
                                labels=c("", "a", "b"),
                                nrow=1,
                                align="h",
-                               widths=c(0.03,1,0.22),
+                               widths=c(0.035,1,0.22),
                                common.legend = TRUE,
                                legend="bottom")
-annotate_figure(arrangeddiffplotswgroups,
-                left = text_grob("Differences in virulence percentages from North to South", rot = 90))
+arrangeddiffplotswgroups <- annotate_figure(arrangeddiffplotswgroups,
+                left = text_grob("Differences in virulence percentages from North to South", rot = 90, size=10))
 
-ggsave("Figure 6 N vs S heatmap.tiff", scale=1.4, dpi=300, width=2902, height=2100, units="px", path=".")
-
-
+ggsave("Figure 6 N vs S heatmap 450dpi.tiff", scale=1, dpi=450, width=246, height=178, units="mm", path=".", bg="white")
 
 
 #################################################################################################
@@ -920,7 +919,7 @@ OCR_lower_tri <- get_upper_tri(OCR_corr_ordered2)
 
 library(corrplot)
 
-tiff(file = "Figure 5 correlations.tiff", width = 2100, height = 2100, units = "px", res = 300)
+tiff(file = "Figure 5 correlations.tiff", width = 178, height = 178, units = "mm", res = 600)
 corrplot(OCR_lower_tri, type='lower', tl.col = 'black', na.label='X', na.label.col='gray', tl.cex=0.75)
 dev.off()
 
